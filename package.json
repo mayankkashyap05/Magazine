@@ -1,0 +1,16 @@
+{
+  "name": "byte-human",
+  "version": "1.0.0",
+  "description": "BYTE/HUMAN — a retro-minimal static editorial magazine about computing, AI and human innovation.",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs",
+    "media": "node tools/media.mjs",
+    "preview": "node tools/serve.mjs",
+    "check": "node tools/check.mjs"
+  },
+  "devDependencies": {
+    "sharp": "^0.33.5"
+  }
+}
