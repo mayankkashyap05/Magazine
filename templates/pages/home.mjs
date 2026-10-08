@@ -54,7 +54,7 @@ function strip() {
     <h2 class="strip-title">THE ACCELERATION</h2>
     <a class="strip-link mono" href="/timeline/">FULL TIMELINE <span aria-hidden="true">→</span></a>
   </div>
-  <div class="strip-scroll" role="list">
+  <div class="strip-scroll">
     <ol>${items}</ol>
   </div>
 </section>`;
@@ -72,7 +72,7 @@ function eniac() {
       <p class="lead-cta mono"><a href="/stories/eniac/">READ THE FEATURE</a> <span aria-hidden="true">→</span></p>
     </div>
     <figure class="eniac-fig">
-      ${picture('eniac-room', { sizes: '(min-width: 900px) 40vw, 94vw' })}
+      ${picture('eniac-room', { sizes: '(min-width: 900px) 50vw, 94vw' })}
       <figcaption class="mono">FIG. 01 — THE MACHINE ROOM. 1946.</figcaption>
     </figure>
     <div class="eniac-stats">

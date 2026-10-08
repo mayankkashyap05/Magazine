@@ -24,7 +24,7 @@ npm run check      # static QA: internal links, anchors, assets, h1 count, alt t
 ```
 
 The site itself ships **zero dependencies**. `dist/` deploys to any static host
-(Netlify, Pages, S3, nginx). Client JavaScript is ~1.7 KB (menu, reading
+(Netlify, Pages, S3, nginx). Client JavaScript is ~2 KB (menu, reading
 progress, archive filter); the publication reads fully with JS disabled.
 
 ## Structure
@@ -41,7 +41,8 @@ media-src/   original generated plates (large; gitignored — derivatives are co
 ## Design system
 
 - **Paper** `#F3EFE6` · **Ink** `#171717` · **Secondary ink** `#5E5B55` ·
-  **Rule** `#C8C1B5` · **Accent** `#B65F32`
+  **Rule** `#C8C1B5` · **Accent** `#B65F32` (display) with `#9A4E24` /
+  `#D08A5F` variants so 10–11px labels keep WCAG AA contrast on paper and ink
 - **Type** — Archivo (variable width, display) + IBM Plex Sans (body) +
   IBM Plex Mono (dates, specs, issue marks, technical labels)
 - Square corners, thin rules, no gradients, no shadows, no cards.

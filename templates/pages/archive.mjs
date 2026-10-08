@@ -41,6 +41,7 @@ export const archiveBody = () => `
           ['FIG. 01', 'THE ORDINARY CRIME SCENE', 'P. 20'],
           ['FIG. 01', 'THE NEW STUDY DESK', 'P. 26'],
           ['FIG. 01', 'SPECIMEN STUDY — CONTROLLER & BRAIN', 'P. 32'],
+          ['FIG. 01', 'UNIVERSITY COMPUTING LABORATORY, 1970S', 'TIMELINE'],
         ]
           .map(
             ([n, t, r]) => `<li><span class="mono">${n}</span><span>${t}</span><span class="mono">${r}</span></li>`
