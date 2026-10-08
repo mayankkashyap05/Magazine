@@ -1,0 +1,102 @@
+// FEATURE 03 — optimistic, structural, three runways.
+export default {
+  slug: 'bca-launchpad',
+  no: '03',
+  kind: 'FEATURE',
+  section: { label: 'PEOPLE', href: '/topics/people/' },
+  topics: ['people'],
+  runtime: 'the launchpad',
+  title: ['BCA IS NOT', 'JUST A DEGREE.'],
+  sub: 'IT’S A LAUNCHPAD',
+  dek: 'A degree gives you knowledge. This one gives you something to build with it — and three directions to leave in.',
+  meta: { date: 'ISSUE 001', read: '5 MIN', ref: 'P. 14', plate: 'PLATE 09' },
+  hero: {
+    img: 'bca-launchpad',
+    layout: 'bleed',
+    ratio: '21/9',
+    caption: 'FIG. 01 — THE DRAFTING TABLE. EVERY PROGRAM IS DRAWN BEFORE IT IS TYPED.',
+  },
+  blocks: [
+    {
+      t: 'lede',
+      layout: 'left',
+      text: 'You do not study technology to describe it. You study it to make a thing that did not exist this morning.',
+    },
+    {
+      t: 'rows',
+      layout: 'full',
+      title: 'WHAT YOU ACTUALLY LEARN TO DO',
+      note: 'FOUR VERBS. EVERYTHING ELSE IS A TOOL.',
+      items: [
+        { k: 'A', title: 'CODE', body: 'Turn an idea into a system that runs without you in the room.' },
+        { k: 'B', title: 'BUILD', body: 'Sites, apps and products — from a first draft to something people use.' },
+        { k: 'C', title: 'SOLVE', body: 'Break an impossible problem into four possible ones.' },
+        { k: 'D', title: 'THINK', body: 'Reason about structure, edge cases and consequences.' },
+      ],
+    },
+    {
+      t: 'runways',
+      layout: 'full',
+      title: 'THREE RUNWAYS',
+      note: 'THESE ARE HEADINGS, NOT DESTINATIONS. MOST PEOPLE TAXI DOWN MORE THAN ONE.',
+      runways: [
+        {
+          n: '01',
+          title: 'THE CAREER RUNWAY',
+          tag: 'EMPLOYED',
+          items: [
+            'SOFTWARE DEVELOPER',
+            'WEB DEVELOPER',
+            'APP DEVELOPER',
+            'DATA ANALYST',
+            'CYBERSECURITY ANALYST',
+            'UI / UX DESIGNER',
+            'CLOUD ENGINEER',
+          ],
+        },
+        {
+          n: '02',
+          title: 'THE HIGHER STUDIES RUNWAY',
+          tag: 'SPECIALIST',
+          items: ['MCA', 'M.Sc. IT', 'MBA / IT MANAGEMENT', 'MS & INTERNATIONAL STUDY'],
+        },
+        {
+          n: '03',
+          title: 'THE CREATOR RUNWAY',
+          tag: 'INDEPENDENT',
+          items: ['FREELANCING', 'STARTUPS', 'APPS & PRODUCTS', 'DIGITAL AGENCIES', 'ENTREPRENEURSHIP'],
+        },
+      ],
+    },
+    { t: 'fig', layout: 'right', img: 'silicon-detail', ratio: '1/1', caption: 'FIG. 02 — THE SMALLEST ROOM IN THE BUILDING. EVERYTHING YOU LEARN HERE IS FASTER THAN IT LOOKS.' },
+    {
+      t: 'list',
+      layout: 'left',
+      title: 'WHAT THE COURSE TEACHES WHEN NOBODY IS LOOKING',
+      items: [
+        { n: '01', title: 'LOGIC', body: 'How to break a problem down until it becomes boring.' },
+        { n: '02', title: 'PATIENCE', body: 'Because the code rarely works the first time. Or the fifth.' },
+        { n: '03', title: 'TEAMWORK', body: 'Because serious software is almost never built alone.' },
+        { n: '04', title: 'ADAPTABILITY', body: 'Because the tool you master this year will be replaced.' },
+      ],
+    },
+    {
+      t: 'statement',
+      layout: 'full',
+      size: 'lg',
+      lines: [
+        { text: 'AI. DATA SCIENCE. CLOUD. CYBERSECURITY. AUTOMATION.', size: 'md' },
+        { text: 'TECHNOLOGY KEEPS CHANGING.', size: 'lg' },
+        { text: 'STRONG FUNDAMENTALS KEEP YOU READY.', size: 'lg' },
+      ],
+    },
+    {
+      t: 'pull',
+      layout: 'narrow',
+      lines: ['A DEGREE GIVES YOU KNOWLEDGE.', 'BUILDING IS WHAT MAKES IT YOURS.'],
+      cite: 'ENIAC, VOL. 01',
+    },
+  ],
+  closing: ['BCA IS NOT THE DESTINATION.', 'IT IS YOUR TAKE-OFF POINT.'],
+  sources: [],
+};

@@ -1,217 +1,232 @@
-// Block renderer: turns structured story blocks into editorial markup.
-import { esc, figure, stat, listRow, sectionHead, tech, picture } from './ui.mjs';
+// Block renderers: structured editorial data → markup.
+// Blocks carry a `layout` (full / wide / left / right / narrow / bleed) which is
+// what keeps the page from turning into one repeated component.
+import { esc, figure, sectionHead, kicker, listRow, pipeRow, statCell, arrow, divider } from './ui.mjs';
 import { TIMELINE } from '../content/timeline.mjs';
+import { ENIAC_SPECS } from '../content/marks.mjs';
+import { loopDiagram, chainDiagram, runwaysDiagram, ladderDiagram } from './diagrams.mjs';
 
-const arrow = '<span class="arrow" aria-hidden="true">→</span>';
+const lay = (b, extra = '') => `blk ${extra} lay-${b.layout ?? 'full'}${b.tone ? ' tone-' + b.tone : ''}${b.overlap ? ' ov' : ''}`;
 
-function statement(b) {
-  const lines = b.lines
-    .map((l) => `<span class="st-line st-${l.size}">${esc(l.text)}</span>`)
-    .join('');
-  return `<div class="statement${b.tone ? ' tone-' + b.tone : ''}">${lines}</div>`;
-}
+const statement = (b) => `<section class="${lay(b, 'blk-statement')}">
+  ${b.kicker ? kicker(b.kicker[0], b.kicker[1]) : ''}
+  <p class="statement">${b.lines
+    .map((l) => `<span class="st st-${l.size ?? 'lg'}">${esc(l.text)}</span>`)
+    .join('')}</p>
+</section>`;
 
-function quote(b) {
-  return `<blockquote class="pull">${b.lines.map((l) => `<span>${esc(l)}</span>`).join('')}</blockquote>`;
-}
+const pull = (b) => `<section class="${lay(b, 'blk-pull')}">
+  <blockquote class="pull">
+    <span class="pull-mark" aria-hidden="true">“</span>
+    <p class="pull-lines">${b.lines.map((l) => `<span>${esc(l)}</span>`).join('')}</p>
+    ${b.cite ? `<cite class="pull-cite mono">${esc(b.cite)}</cite>` : ''}
+  </blockquote>
+</section>`;
 
-function stats(b) {
-  return `<section class="blk-stats">
-    ${sectionHead('§', 'SPECIFICATION', b.title, b.note)}
-    <div class="stats-grid">${b.items.map(stat).join('')}</div>
-  </section>`;
-}
+const lede = (b) => `<section class="${lay(b, 'blk-lede')}"><p class="lede">${esc(b.text)}</p></section>`;
 
-function rows(b) {
-  return `<section class="blk-rows">
-    ${sectionHead('§', 'OPERATIONS', b.title, b.note)}
-    <div class="rows">
-      ${b.items
+const prose = (b) => `<section class="${lay(b, 'blk-prose')}"><p class="prose">${esc(b.text)}</p></section>`;
+
+const rule = (b) => `<div class="${lay(b, 'blk-rule')}">${divider(b.label)}</div>`;
+
+const specs = (b) => {
+  const items = b.items === 'eniac' ? ENIAC_SPECS : b.items ?? [];
+  return `<section class="${lay(b, 'blk-specs')}">
+  ${sectionHead('§', 'SPECIFICATION', b.title, b.note)}
+  <div class="specs${b.lead ? ' specs-lead' : ''}">${items
+    .map((it, i) => statCell(it, i, { withSource: !b.lead || i === 0 }))
+    .join('')}</div>
+  ${b.footer ? `<p class="sec-foot mono">${esc(b.footer)}</p>` : ''}
+</section>`;
+};
+
+const keynote = (b) => `<section class="${lay(b, 'blk-keynote')}">
+  <ul class="keynotes">${b.words.map((w) => `<li>${esc(w)}</li>`).join('')}</ul>
+  ${b.note ? `<p class="sec-foot mono">${esc(b.note)}</p>` : ''}
+</section>`;
+
+const rows = (b) => `<section class="${lay(b, 'blk-rows')}">
+  ${sectionHead('§', b.label ?? 'OPERATIONS', b.title, b.note)}
+  <div class="prows">${b.items.map(pipeRow).join('')}</div>
+</section>`;
+
+const list = (b) => `<section class="${lay(b, 'blk-list')}">
+  ${sectionHead('§', b.label ?? 'INDEX', b.title, b.note)}
+  <div class="lrows">${b.items.map(listRow).join('')}</div>
+</section>`;
+
+const rules = (b) => `<section class="${lay(b, 'blk-rules')}">
+  ${sectionHead('§', 'PROTOCOL', b.title, b.note)}
+  <ol class="rules">${b.items.map(listRow).join('')}</ol>
+  ${b.footer ? `<p class="sec-foot mono">${esc(b.footer)}</p>` : ''}
+</section>`;
+
+const roster = (b) => `<section class="${lay(b, 'blk-roster')}">
+  ${sectionHead('§', 'PERSONNEL — SIX', b.title, b.note)}
+  <ol class="roster">
+    ${b.people
+      .map(
+        (p, i) => `<li class="roster-item">
+      <span class="roster-n mono">${String(i + 1).padStart(2, '0')}</span>
+      <span class="roster-name">${esc(p.name)}</span>
+      ${p.note ? `<span class="roster-note">${esc(p.note)}</span>` : ''}
+    </li>`
+      )
+      .join('')}
+  </ol>
+  ${b.footer ? `<p class="sec-foot mono">${esc(b.footer)}</p>` : ''}
+</section>`;
+
+const pair = (b) => `<section class="${lay(b, 'blk-pair')}">
+  ${sectionHead('§', b.label ?? 'READING', b.title, b.note)}
+  <div class="pair">
+    <div class="pair-col">
+      <h3 class="pair-t mono">${esc(b.left.title)}</h3>
+      <ul>${b.left.items.map((i) => `<li>${esc(i)}</li>`).join('')}</ul>
+    </div>
+    <div class="pair-col pair-col-b">
+      <h3 class="pair-t mono">${esc(b.right.title)}</h3>
+      <ul>${b.right.items.map((i) => `<li>${esc(i)}</li>`).join('')}</ul>
+    </div>
+  </div>
+  ${b.insight ? `<p class="pair-insight">${esc(b.insight)}</p>` : ''}
+</section>`;
+
+const runways = (b) => `<section class="${lay(b, 'blk-runways')}">
+  ${sectionHead('§', 'TRAJECTORIES', b.title, b.note)}
+  ${runwaysDiagram(b.runways)}
+  <div class="runways">
+    ${b.runways
+      .map(
+        (r) => `<div class="runway">
+      <header class="runway-head">
+        <span class="runway-n mono">${esc(r.n)}</span>
+        <h3 class="runway-t">${esc(r.title)}</h3>
+        ${r.tag ? `<span class="runway-tag mono">${esc(r.tag)}</span>` : ''}
+      </header>
+      <ul class="runway-items">${r.items.map((i) => `<li>${esc(i)}</li>`).join('')}</ul>
+    </div>`
+      )
+      .join('')}
+  </div>
+</section>`;
+
+const chain = (b) => `<section class="${lay(b, 'blk-chain')}">
+  ${sectionHead('§', 'SEQUENCE', b.title, b.note)}
+  ${chainDiagram(b.nodes)}
+</section>`;
+
+const loop = (b) => `<section class="${lay(b, 'blk-loop')}">
+  ${sectionHead('§', 'DIAGRAM', b.title, b.note)}
+  <div class="loop-wrap">
+    ${loopDiagram(b.nodes)}
+    <div class="loop-aside">
+      ${b.nodes
         .map(
-          (r) => `<div class="row">
-        <span class="row-k mono">${esc(r.k)}</span>
-        <h3 class="row-t">${esc(r.title)}</h3>
-        <p class="row-b">${esc(r.body)}</p>
-      </div>`
+          (n, i) => `<div class="loop-step"><span class="mono">${String(i + 1).padStart(2, '0')}</span><span>${esc(n)}</span></div>`
         )
         .join('')}
     </div>
-  </section>`;
-}
+  </div>
+  ${b.footer ? `<p class="sec-foot mono">${esc(b.footer)}</p>` : ''}
+</section>`;
 
-function list(b) {
-  return `<section class="blk-list">
-    ${sectionHead('§', 'INDEX', b.title, b.note)}
-    <div class="lrows">${b.items.map(listRow).join('')}</div>
-  </section>`;
-}
+const ladder = (b) => `<section class="${lay(b, 'blk-ladder')}">
+  ${sectionHead('§', 'DIAGRAM', b.title, b.note)}
+  ${ladderDiagram(b.steps)}
+</section>`;
 
-function rules(b) {
-  return `<section class="blk-rules">
-    ${sectionHead('§', 'PROTOCOL', b.title)}
-    <ol class="rules">
-      ${b.items
-        .map(
-          (r) => `<li class="rule-row">
-        <span class="rule-n mono">${esc(r.n)}</span>
-        <h3 class="rule-t">${esc(r.title)}</h3>
-        <p class="rule-b">${esc(r.body)}</p>
-      </li>`
-        )
-        .join('')}
-    </ol>
-  </section>`;
-}
+const edge = (b) => `<section class="${lay(b, 'blk-edge')}">
+  ${sectionHead('§', 'INVENTORY', b.title, b.note)}
+  <p class="edge">${b.items
+    .map((i, k) => `<span class="edge-i"><span class="edge-n mono">${String(k + 1).padStart(2, '0')}</span>${esc(i)}</span>`)
+    .join('')}</p>
+</section>`;
 
-function ladder(b) {
-  return `<section class="blk-ladder">
-    ${sectionHead('§', 'DIAGRAM', b.title, b.note)}
-    <div class="ladder">
-      ${b.steps
-        .map(
-          (s, i) => `<div class="ladder-step" style="--step:${i}">
-        <span class="ladder-k mono">${esc(s.k)}</span>
-        <span class="ladder-t">${esc(s.title)}</span>
-        <span class="ladder-b">${esc(s.body)}</span>
-      </div>`
-        )
-        .join('')}
-    </div>
-  </section>`;
-}
+const protocol = (b) => `<section class="${lay(b, 'blk-protocol')}">
+  ${sectionHead('§', 'METHOD', b.title, b.note)}
+  <div class="protocols">
+    ${b.rows
+      .map(
+        (r) => `<div class="protocol">
+      <span class="protocol-l">${esc(r.left)}</span>
+      <span class="protocol-arrow" aria-hidden="true">→</span>
+      <span class="protocol-r">${esc(r.right)}</span>
+    </div>`
+      )
+      .join('')}
+  </div>
+  ${b.footer ? `<p class="protocol-foot">${esc(b.footer)}</p>` : ''}
+</section>`;
 
-function chain(b) {
-  return `<section class="blk-chain">
-    ${sectionHead('§', 'SEQUENCE', b.title, b.note)}
-    <div class="chain">${b.nodes.map((n) => `<span class="chain-node">${esc(n)}</span>`).join(arrow)}</div>
-  </section>`;
-}
+const exhibits = (b) => `<section class="${lay(b, 'blk-exhibits')}">
+  ${sectionHead('§', 'EVIDENCE', b.title, b.note)}
+  <div class="exhibits">
+    ${b.items
+      .map(
+        (x) => `<figure class="exhibit">
+      <figcaption class="exhibit-tag mono">${esc(x.tag)}</figcaption>
+      <blockquote class="exhibit-text">${esc(x.text)}</blockquote>
+      ${x.tell ? `<p class="exhibit-tell mono">${esc(x.tell)}</p>` : ''}
+    </figure>`
+      )
+      .join('')}
+  </div>
+  ${b.insight ? `<p class="exhibit-insight">${esc(b.insight)}</p>` : ''}
+</section>`;
 
-function loop(b) {
-  const nodes = b.nodes.map((n) => `<span class="chain-node">${esc(n)}</span>`).join(arrow);
-  return `<section class="blk-loop">
-    ${sectionHead('§', 'DIAGRAM', b.title, b.note)}
-    <div class="chain loop">
-      ${nodes}
-      <span class="loop-return mono" aria-hidden="true">↺ RETURNS TO PLAY</span>
-    </div>
-  </section>`;
-}
+const fig = (b) => `<div class="${lay(b, 'blk-fig')}">${figure(b.img, {
+  caption: b.caption,
+  ratio: b.ratio,
+  sizes: b.sizes,
+  parallax: b.parallax,
+})}</div>`;
 
-function runways(b) {
-  return `<section class="blk-runways">
-    ${sectionHead('§', 'TRAJECTORIES', b.title, b.note)}
-    <div class="runways">
-      ${b.runways
-        .map(
-          (r) => `<div class="runway">
-        <header class="runway-head">
-          <span class="runway-n mono">${esc(r.n)}</span>
-          <h3 class="runway-t">${esc(r.title)}</h3>
-          <span class="runway-line" aria-hidden="true"></span>
-        </header>
-        <ul class="runway-items">${r.items.map((i) => `<li>${esc(i)}</li>`).join('')}</ul>
-      </div>`
-        )
-        .join('')}
-    </div>
-  </section>`;
-}
+const gallery = (b) => `<div class="${lay(b, 'blk-gallery')}">
+  <div class="gallery g-${b.items.length}">
+    ${b.items.map((it) => figure(it.img, { caption: it.caption, ratio: it.ratio ?? '4/3', sizes: '(min-width: 900px) 32vw, 92vw' })).join('')}
+  </div>
+</div>`;
 
-function pair(b) {
-  return `<section class="blk-pair">
-    ${sectionHead('§', 'READING', b.title, b.insight)}
-    <div class="pair">
-      <div class="pair-col">
-        <h3 class="pair-t mono">${esc(b.left.title)}</h3>
-        <ul>${b.left.items.map((i) => `<li>${esc(i)}</li>`).join('')}</ul>
-      </div>
-      <div class="pair-col pair-right">
-        <h3 class="pair-t mono">${esc(b.right.title)}</h3>
-        <ul>${b.right.items.map((i) => `<li>${esc(i)}</li>`).join('')}</ul>
-      </div>
-    </div>
-  </section>`;
-}
+const timelineIndex = (b) => `<section class="${lay(b, 'blk-tlindex')}">
+  ${sectionHead('§', 'SEQUENCE', b.title, b.note)}
+  <ol class="tlindex">
+    ${TIMELINE.map(
+      (t, i) => `<li class="tlindex-row pace-${t.pace}">
+      <a href="/timeline/#${t.key}">
+        <span class="tli-n mono">${String(i + 1).padStart(2, '0')}</span>
+        <span class="tli-year">${esc(t.year)}</span>
+        <span class="tli-title">${esc(t.title)}</span>
+        <span class="tli-tag mono">${esc(t.tag)}</span>
+      </a>
+    </li>`
+    ).join('')}
+  </ol>
+  <p class="sec-foot mono"><a class="link-arrow" href="/timeline/">OPEN THE FULL TIMELINE ${arrow}</a></p>
+</section>`;
 
-function specimens(b) {
-  return `<section class="blk-specimens">
-    ${sectionHead('§', 'EVIDENCE', b.title)}
-    <div class="specimens">
-      ${b.items
-        .map(
-          (s) => `<div class="specimen">
-        <span class="specimen-tag mono">${esc(s.tag)}</span>
-        <p class="specimen-text">${esc(s.text)}</p>
-      </div>`
-        )
-        .join('')}
-    </div>
-    <p class="insight">${esc(b.insight)}</p>
-  </section>`;
-}
+const marks = (b) => `<section class="${lay(b, 'blk-marks')}">
+  <div class="marks">
+    ${b.items
+      .map(
+        (m) => `<div class="mark">
+      <span class="mark-v" data-count="${esc(m.v)}">${esc(m.v)}</span>
+      <span class="mark-u mono">${esc(m.u)}</span>
+      <span class="mark-n">${esc(m.note)}</span>
+    </div>`
+      )
+      .join('')}
+  </div>
+</section>`;
 
-function roster(b) {
-  return `<section class="blk-roster">
-    ${sectionHead('§', 'PERSONNEL', b.title, b.note)}
-    <ol class="roster">
-      ${b.people.map((p, i) => `<li><span class="roster-n mono">0${i + 1}</span><span class="roster-name">${esc(p)}</span></li>`).join('')}
-    </ol>
-  </section>`;
-}
-
-function edge(b) {
-  return `<section class="blk-edge">
-    ${sectionHead('§', 'INVENTORY', b.title)}
-    <p class="edge">${b.items.map((i) => `<span>${esc(i)}</span>`).join('<span class="edge-sep" aria-hidden="true">/</span>')}</p>
-  </section>`;
-}
-
-function prose(b) {
-  return `<p class="prose">${esc(b.text)}</p>`;
-}
-
-function timelineBlock(b) {
-  return `<section class="blk-timeline">
-    ${sectionHead('§', 'SEQUENCE', 'THE ACCELERATION', b.note)}
-    <ol class="tl">
-      ${TIMELINE.map(
-        (t) => `<li class="tl-entry pace-${t.pace}">
-        <span class="tl-year">${esc(t.year)}</span>
-        <span class="tl-node" aria-hidden="true"></span>
-        <div class="tl-body">
-          <h3 class="tl-title">${esc(t.title)} <span class="tech">${esc(t.tag)}</span></h3>
-          <p class="tl-text">${esc(t.body)}</p>
-        </div>
-      </li>`
-      ).join('')}
-    </ol>
-  </section>`;
-}
-
-function fig(b) {
-  return figure(b.img, { caption: b.caption, ratio: b.ratio, sizes: b.sizes });
-}
+const renderers = {
+  statement, pull, lede, prose, rule, specs, keynote, rows, list, rules, roster, pair,
+  runways, chain, loop, ladder, edge, protocol, exhibits, fig, gallery, timelineIndex, marks,
+};
 
 export function renderBlock(b) {
-  switch (b.t) {
-    case 'statement': return statement(b);
-    case 'quote': return quote(b);
-    case 'stats': return stats(b);
-    case 'rows': return rows(b);
-    case 'list': return list(b);
-    case 'rules': return rules(b);
-    case 'ladder': return ladder(b);
-    case 'chain': return chain(b);
-    case 'loop': return loop(b);
-    case 'runways': return runways(b);
-    case 'pair': return pair(b);
-    case 'specimens': return specimens(b);
-    case 'roster': return roster(b);
-    case 'edge': return edge(b);
-    case 'prose': return prose(b);
-    case 'timeline': return timelineBlock(b);
-    case 'fig': return fig(b);
-    default: return '';
-  }
+  const fn = renderers[b.t];
+  return fn ? fn(b) : '';
 }
+
+export const renderBlocks = (blocks) => blocks.map(renderBlock).join('\n');

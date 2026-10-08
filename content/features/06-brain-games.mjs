@@ -1,0 +1,102 @@
+// FEATURE 06 — the immersive behavioural story.
+export default {
+  slug: 'brain-games',
+  no: '06',
+  kind: 'FEATURE',
+  section: { label: 'CULTURE', href: '/topics/culture/' },
+  topics: ['culture', 'people'],
+  runtime: 'the loop',
+  title: ['HUMAN BRAIN &', 'COMPUTER GAMES'],
+  sub: 'WHO IS CONTROLLING WHOM?',
+  dek: 'You think you are playing the game. Every reward, sound and level was designed to keep you playing it.',
+  meta: { date: 'ISSUE 001', read: '6 MIN', ref: 'P. 32', plate: 'PLATE 14' },
+  hero: {
+    img: 'gaming-brain',
+    layout: 'split-right',
+    ratio: '1/1',
+    caption: 'FIG. 01 — SPECIMEN STUDY. THE CONTROLLER, AND THE ORGAN IT IS BUILT FOR.',
+    aside: {
+      kind: 'contents',
+      title: 'IN THIS FEATURE',
+      items: ['THE DOPAMINE LOOP', 'TWO READINGS OF THE SAME HOUR', 'THE GAMER’S GOLDEN RULES', 'WHO IS CONTROLLING WHOM?'],
+      note: 'NOT AN ARGUMENT AGAINST GAMES. AN ARGUMENT AGAINST DRIFT.',
+    },
+  },
+  blocks: [
+    {
+      t: 'lede',
+      layout: 'narrow',
+      text: 'Nobody designs a game to be boring. That is the whole story — and the whole difficulty.',
+    },
+    {
+      t: 'loop',
+      layout: 'full',
+      title: 'THE DOPAMINE LOOP',
+      note: 'A SIMPLIFIED MODEL OF WHAT GAMES ARE ENGINEERED TO CLOSE, QUICKLY AND OFTEN.',
+      nodes: ['PLAY', 'REWARD', 'DOPAMINE', 'REPEAT'],
+      footer: 'DOPAMINE IS NOT PLEASURE. IT IS ANTICIPATION — WHICH IS WHY THE NEXT ROUND FEELS BETTER THAN THE LAST ONE DID.',
+    },
+    {
+      t: 'pair',
+      layout: 'full',
+      title: 'TWO READINGS OF THE SAME HOUR',
+      insight: 'THE GAME IS NEUTRAL. THE PATTERN IS NOT.',
+      left: {
+        title: 'WHAT THE RIGHT GAMES BUILD',
+        items: [
+          'REACTION — QUICK, CONFIDENT DECISIONS UNDER PRESSURE.',
+          'STRATEGY — PLANNING, RESOURCE TRADE-OFFS, LOGIC.',
+          'TEAMWORK — COORDINATION AND SHARED VOCABULARY.',
+          'CREATIVITY — BUILDING, DESIGNING, EXPERIMENTING.',
+        ],
+      },
+      right: {
+        title: 'WHAT LOSING CONTROL COSTS',
+        items: [
+          'ATTENTION — SLOWER THINGS BECOME HARD TO TOLERATE.',
+          'MOOD & ANGER — HEAVY COMPETITIVE PLAY STRAINS REGULATION.',
+          'SLEEP — LATE SCREENS PUSH THE BODY CLOCK LATER.',
+          'MOMENTUM — ONE MORE ROUND, EVERY NIGHT.',
+        ],
+      },
+    },
+    {
+      t: 'fig',
+      layout: 'wide',
+      img: 'controller-plate',
+      ratio: '3/2',
+      caption: 'FIG. 02 — THE MACHINE, DISASSEMBLED. NOTHING IN A CONTROLLER IS ACCIDENTAL: THE GRIP, THE CLICK, THE RUMBLE AND THE REWARD SCHEDULE ARE ALL DECISIONS SOMEONE MADE.',
+    },
+    {
+      t: 'statement',
+      layout: 'full',
+      size: 'xl',
+      lines: [{ text: 'THE GAME IS NOT THE ENEMY.', size: 'xl' }, { text: 'LOSING CONTROL IS.', size: 'xl' }],
+      tone: 'ink',
+    },
+    {
+      t: 'rules',
+      layout: 'full',
+      title: 'THE GAMER’S GOLDEN RULES',
+      note: 'PRACTICAL, NOT PURITANICAL.',
+      items: [
+        { n: '01', title: 'THE 60–10 RULE', body: 'Play about sixty minutes. Stand up, move, drink water for ten.' },
+        { n: '02', title: 'NO GAMES BEFORE BED', body: 'Give the brain an hour of wind-down before sleep.' },
+        { n: '03', title: 'CHOOSE THE GAME', body: 'Strategy, puzzle and creative games exercise different systems than repetition does.' },
+        { n: '04', title: 'NAME THE STOPPING POINT', body: 'Decide it before the session starts, not after it goes well.' },
+      ],
+    },
+    {
+      t: 'statement',
+      layout: 'right',
+      size: 'lg',
+      lines: [
+        { text: 'AM I PLAYING THE GAME?', size: 'lg' },
+        { text: 'OR IS THE GAME PLAYING ME?', size: 'lg' },
+        { text: 'YOUR BRAIN IS THE MOST POWERFUL SYSTEM YOU WILL EVER OWN. IT COMES WITHOUT A WARRANTY.', size: 'sm' },
+      ],
+    },
+  ],
+  closing: ['THE CONTROLLER FITS YOUR HAND.', 'SO DOES THE DESIGN.'],
+  sources: [],
+};
