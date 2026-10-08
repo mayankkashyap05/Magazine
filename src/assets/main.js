@@ -9,8 +9,16 @@ if (menuBtn && menu) {
     menuBtn.setAttribute('aria-expanded', String(open));
     menuBtn.textContent = open ? 'CLOSE' : 'MENU';
     document.body.classList.toggle('menu-open', open);
+    if (open) {
+      const first = menu.querySelector('a');
+      if (first) first.focus();
+    }
   };
-  menuBtn.addEventListener('click', () => setOpen(menu.hidden));
+  menuBtn.addEventListener('click', () => {
+    const open = menu.hidden;
+    setOpen(open);
+    if (!open) menuBtn.focus();
+  });
   menu.addEventListener('click', (e) => {
     if (e.target.closest('a')) setOpen(false);
   });

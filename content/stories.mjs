@@ -75,6 +75,10 @@ export const STORIES = [
         text: 'During the Second World War, the U.S. Army needed artillery firing tables — thousands of complex ballistic calculations, and human computers were too slow. ENIAC was built to do that arithmetic electronically.',
       },
       {
+        t: 'prose',
+        text: 'Widely regarded as the first general-purpose electronic digital computer, ENIAC marked the moment computing turned electronic.',
+      },
+      {
         t: 'stats',
         title: 'THE NUMBERS',
         items: [
@@ -109,7 +113,7 @@ export const STORIES = [
         ],
       },
       { t: 'fig', img: 'eniac-programmers', ratio: '4/3', caption: 'FIG. 02 — PROGRAMMING BY HAND. CABLES WERE THE LANGUAGE.' },
-      { t: 'fig', img: 'vacuum-tube', ratio: '1/1', caption: 'FIG. 03 — VACUUM TUBES. EACH STORED DIGIT COST 36 OF THEM.' },
+      { t: 'fig', img: 'vacuum-tube', ratio: '1/1', caption: 'FIG. 03 — VACUUM TUBES. 17,468 ELECTRONIC SWITCHES. NO MOVING PARTS.' },
       {
         t: 'chain',
         title: 'LEGACY',
@@ -182,6 +186,14 @@ export const STORIES = [
       {
         t: 'statement',
         lines: [
+          { text: 'AI. DATA SCIENCE. CLOUD. CYBERSECURITY. AUTOMATION.', size: 'md' },
+          { text: 'TECHNOLOGY KEEPS CHANGING.', size: 'lg' },
+          { text: 'STRONG FUNDAMENTALS KEEP YOU READY.', size: 'lg' },
+        ],
+      },
+      {
+        t: 'statement',
+        lines: [
           { text: 'BCA IS NOT THE DESTINATION.', size: 'lg' },
           { text: 'IT’S YOUR TAKE-OFF POINT.', size: 'lg' },
         ],
@@ -244,6 +256,10 @@ export const STORIES = [
           { n: '04', title: 'USE TWO LOCKS.', body: 'Enable two-factor authentication wherever possible.' },
           { n: '05', title: 'UPDATE.', body: 'Updates often close the doors attackers use.' },
         ],
+      },
+      {
+        t: 'quote',
+        lines: ['PASSWORDS CAN BE CHANGED.', 'MONEY CAN SOMETIMES BE RECOVERED.', 'BUT PRIVACY MAY NEVER BE RESTORED.'],
       },
       {
         t: 'statement',

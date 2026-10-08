@@ -69,9 +69,11 @@ function footer() {
   const nav = SITE.nav.map((n) => `<li><a href="${n.href}">${n.label}</a></li>`).join('');
   return `<footer class="site-foot">
   <div class="foot-close">
-    <p class="foot-line">THE MACHINE CHANGES.<br>THE HUMAN QUESTION REMAINS.</p>
+    <div class="wrap">
+      <p class="foot-line">THE MACHINE CHANGES.<br>THE HUMAN QUESTION REMAINS.</p>
+    </div>
   </div>
-  <div class="foot-grid">
+  <div class="wrap foot-grid">
     <div class="foot-col">
       <p class="foot-brand">BYTE<span aria-hidden="true">/</span>HUMAN</p>
       <p class="foot-statement">${SITE.statement}</p>
