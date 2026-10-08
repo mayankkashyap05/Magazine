@@ -1,9 +1,14 @@
-export const notfoundBody = () => `
-<section class="nf">
+// 404 — an out-of-issue page.
+import { esc, kicker, arrow } from '../ui.mjs';
+
+export const notfoundBody = () => `<section class="nf">
   <div class="wrap">
-    <p class="mono nf-sys">SYSTEM / 404</p>
-    <h1 class="nf-title">PAGE NOT FOUND</h1>
-    <p class="nf-dek">The requested page could not be located in this volume.</p>
-    <a class="nf-link mono" href="/">RETURN TO THE FRONT PAGE →</a>
+    ${kicker('SYSTEM', 'ERROR / 404')}
+    <h1 class="nf-title">PAGE NOT<br>IN THIS ISSUE.</h1>
+    <p class="nf-dek">The requested page could not be located in Volume 01. It may have been moved, or it may never have been printed.</p>
+    <p class="nf-links mono">
+      <a class="link-arrow" href="/">FRONT PAGE ${arrow}</a>
+      <a class="link-arrow" href="/archive/">ARCHIVE ${arrow}</a>
+    </p>
   </div>
 </section>`;

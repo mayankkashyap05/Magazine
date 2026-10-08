@@ -1,14 +1,16 @@
 {
-  "name": "byte-human",
+  "name": "eniac-magazine",
   "version": "1.0.0",
-  "description": "BYTE/HUMAN — a retro-minimal static editorial magazine about computing, AI and human innovation.",
+  "description": "ENIAC \u2014 a retro-editorial static magazine about computing, AI, security and human innovation. Old machine, new thinking.",
   "private": true,
   "type": "module",
   "scripts": {
     "build": "node build.mjs",
     "media": "node tools/media.mjs",
     "preview": "node tools/serve.mjs",
-    "check": "node tools/check.mjs"
+    "check": "node tools/check.mjs",
+    "ship": "node tools/media.mjs && node build.mjs && node tools/check.mjs",
+    "dev": "node build.mjs && node tools/serve.mjs"
   },
   "devDependencies": {
     "sharp": "^0.35.5"
