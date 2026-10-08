@@ -73,14 +73,14 @@ ${caption || credit ? `<figcaption><span class="fig-cap">${esc(caption ?? '')}</
 
 /* ---------- editorial objects ---------- */
 
-export const statCell = ({ v, u, note, label, source }, i) => `
+export const statCell = ({ v, u, note, label, source }, i, { withSource = true } = {}) => `
 <div class="spec-cell">
   <span class="spec-n mono">${String(i + 1).padStart(2, '0')}</span>
   <span class="spec-v" data-count="${esc(v)}">${esc(v)}</span>
   <span class="spec-u">${esc(u)}</span>
   ${label ? `<span class="spec-l mono">${esc(label)}</span>` : ''}
   ${note ? `<span class="spec-note">${esc(note)}</span>` : ''}
-  ${source ? `<span class="spec-note src-foot mono"><a href="/colophon/#${esc(source)}">SOURCE ${esc(source.toUpperCase())}</a></span>` : ''}
+  ${source && withSource ? `<span class="spec-note src-foot mono"><a href="/colophon/#${esc(source)}">SOURCE / ${esc(source.toUpperCase())}</a></span>` : ''}
 </div>`;
 
 export const listRow = ({ n, title, body }, i = 0) => `

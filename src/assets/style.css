@@ -731,24 +731,39 @@ a:hover .arrow, .link-arrow:hover .arrow { transform: translateX(4px); }
 .spec-note { color: var(--ink-2); font-size: 0.9rem; max-width: 32ch; margin-top: var(--s2); }
 .specs-note { grid-column: 1 / -1; color: var(--ink-3); padding-top: var(--s4); }
 
-/* when a story wants its numbers to be landmarks rather than a table */
-.specs-lead { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-.specs-lead .spec-cell:first-child { grid-column: span 2; }
-.specs-lead .spec-cell:first-child .spec-v { font-size: clamp(4.4rem, 15vw, 12.5rem); line-height: 0.78; }
-.specs-lead .spec-cell:first-child .spec-u { font-size: 13px; letter-spacing: 0.2em; }
-.specs-lead .spec-cell:first-child .spec-note { max-width: 26ch; }
-.specs-lead .spec-cell:nth-child(3) { border-right: 0; }
+/* when a story wants its numbers to be landmarks rather than a table:
+   one monumental mark across the full measure, then a ledger of five beneath */
+.specs-lead { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+.specs-lead .spec-cell:first-child {
+  grid-column: 1 / -1;
+  border-right: 0;
+  padding-bottom: var(--s6);
+}
+.specs-lead .spec-cell:first-child .spec-v { font-size: clamp(4.6rem, 17vw, 14rem); line-height: 0.76; letter-spacing: -0.05em; }
+.specs-lead .spec-cell:first-child .spec-u { font-size: 13px; letter-spacing: 0.22em; }
+.specs-lead .spec-cell:first-child .spec-note { max-width: 34ch; font-size: 1rem; }
+.specs-lead .spec-cell:nth-child(3) { border-right: 1px solid rgb(242 237 227 / 0.2); }
+.specs-lead .spec-cell:nth-child(6) { border-right: 0; }
+.specs-lead .spec-cell { min-width: 0; }
+.specs-lead .spec-u { font-size: 10px; letter-spacing: 0.12em; }
+.specs-lead .spec-v { font-size: clamp(1.9rem, 3.4vw, 2.9rem); }
 
 /* the specification source, as a footnote you can follow */
 .src-foot { display: block; margin-top: 6px; letter-spacing: 0.14em; }
 .src-foot a { color: inherit; border-bottom: 1px solid var(--rule-2); }
 .src-foot a:hover { color: var(--accent-deep); border-bottom-color: var(--accent); }
 
-@media (max-width: 760px) {
+@media (max-width: 1000px) {
+  .specs-lead { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .specs-lead .spec-cell:nth-child(4) { border-right: 0; }   /* third of the ledger row */
+  .specs-lead .spec-cell:nth-child(6) { border-right: 0; }
+}
+@media (max-width: 620px) {
   .specs-lead { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .specs-lead .spec-cell:first-child { grid-column: span 2; border-right: 0; }
-  .specs-lead .spec-cell:first-child .spec-v { font-size: clamp(4rem, 24vw, 8rem); }
-  .specs-lead .spec-cell:nth-child(3) { border-right: 1px solid rgb(242 237 227 / 0.2); }
+  .specs-lead .spec-cell { border-right: 1px solid rgb(242 237 227 / 0.2); }
+  .specs-lead .spec-cell:nth-child(2n) { border-right: 0; }
+  .specs-lead .spec-cell:first-child { border-right: 0; }
+  .specs-lead .spec-cell:first-child .spec-v { font-size: clamp(4rem, 25vw, 7rem); }
 }
 
 .six { margin-top: clamp(40px, 6vw, 88px); }

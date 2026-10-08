@@ -33,7 +33,9 @@ const specs = (b) => {
   const items = b.items === 'eniac' ? ENIAC_SPECS : b.items ?? [];
   return `<section class="${lay(b, 'blk-specs')}">
   ${sectionHead('§', 'SPECIFICATION', b.title, b.note)}
-  <div class="specs${b.lead ? ' specs-lead' : ''}">${items.map(statCell).join('')}</div>
+  <div class="specs${b.lead ? ' specs-lead' : ''}">${items
+    .map((it, i) => statCell(it, i, { withSource: !b.lead || i === 0 }))
+    .join('')}</div>
   ${b.footer ? `<p class="sec-foot mono">${esc(b.footer)}</p>` : ''}
 </section>`;
 };
